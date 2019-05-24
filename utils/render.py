@@ -3,7 +3,8 @@
 
 
 """
-Modified from https://raw.githubusercontent.com/YadiraF/PRNet/master/utils/render.py
+Modified from
+https://raw.githubusercontent.com/YadiraF/PRNet/master/utils/render.py
 """
 
 __author__ = 'cleardusk'
@@ -19,7 +20,8 @@ def is_point_in_tri(point, tri_points):
         http://blackpawn.com/texts/pointinpoly/
     Args:
         point: [u, v] or [x, y]
-        tri_points: three vertices(2d points) of a triangle. 2 coords x 3 vertices
+        tri_points: three vertices(2d points) of a triangle.
+        2 coords x 3 vertices
     Returns:
         bool: true for in triangle
     '''
@@ -63,9 +65,12 @@ def render_colors(vertices, colors, tri, h, w, c=3):
     image = np.zeros((h, w, c))
 
     depth_buffer = np.zeros([h, w]) - 999999.
-    # triangle depth: approximate the depth to the average value of z in each vertex(v0, v1, v2), since the vertices are closed to each other
-    tri_depth = (vertices[2, tri[0, :]] + vertices[2, tri[1, :]] + vertices[2, tri[2, :]]) / 3.
-    tri_tex = (colors[:, tri[0, :]] + colors[:, tri[1, :]] + colors[:, tri[2, :]]) / 3.
+    # triangle depth: approximate the depth to the average value of z
+    # in each vertex(v0, v1, v2), since the vertices are closed to each other
+    tri_depth = (vertices[2, tri[0, :]] + vertices[2, tri[1, :]] +
+                 vertices[2, tri[2, :]]) / 3.
+    tri_tex = (colors[:, tri[0, :]] + colors[:, tri[1, :]] +
+               colors[:, tri[2, :]]) / 3.
 
     for i in range(tri.shape[1]):
         tri_idx = tri[:, i]  # 3 vertex indices
@@ -82,7 +87,8 @@ def render_colors(vertices, colors, tri, h, w, c=3):
 
         for u in range(umin, umax + 1):
             for v in range(vmin, vmax + 1):
-                if tri_depth[i] > depth_buffer[v, u] and is_point_in_tri([u, v], vertices[:2, tri_idx]):
+                if (tri_depth[i] > depth_buffer[v, u] and
+                        is_point_in_tri([u, v], vertices[:2, tri_idx])):
                     depth_buffer[v, u] = tri_depth[i]
                     image[v, u, :] = tri_tex[:, i]
     return image
@@ -166,7 +172,7 @@ def cget_depths_image(img, vertices_lst, tri):
 
 
 def ncc(vertices):
-    ## simple version
+    # simple version
     # ncc_vertices = np.zeros_like(vertices)
     # x = vertices[0, :]
     # y = vertices[1, :]
@@ -213,11 +219,3 @@ def cpncc_v2(img, vertices_lst, tri):
 
     pnccs_img = pnccs_img.squeeze() * 255
     return pnccs_img
-
-
-def main():
-    pass
-
-
-if __name__ == '__main__':
-    main()

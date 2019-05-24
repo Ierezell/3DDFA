@@ -25,9 +25,11 @@ def _parse_param(param):
 
 
 def reconstruct_vertex(param, whitening=True, dense=False, transform=True):
-    """Whitening param -> 3d vertex, based on the 3dmm param: u_base, w_shp, w_exp
-    dense: if True, return dense vertex, else return 68 sparse landmarks. All dense or sparse vertex is transformed to
-    image coordinate space, but without alignment caused by face cropping.
+    """Whitening param -> 3d vertex, based on the 3dmm param:
+    u_base, w_shp, w_exp
+    dense: if True, return dense vertex, else return 68 sparse landmarks.
+    All dense or sparse vertex is transformed to image coordinate space,
+    but without alignment caused by face cropping.
     transform: whether transform to image space
     """
     if len(param) == 12:
@@ -49,7 +51,8 @@ def reconstruct_vertex(param, whitening=True, dense=False, transform=True):
             vertex[1, :] = std_size + 1 - vertex[1, :]
     else:
         """For 68 pts"""
-        vertex = p @ (u_base + w_shp_base @ alpha_shp + w_exp_base @ alpha_exp).reshape(3, -1, order='F') + offset
+        vertex = p @ (u_base + w_shp_base @ alpha_shp + w_exp_base @
+                      alpha_exp).reshape(3, -1, order='F') + offset
 
         if transform:
             # transform to image coordinate space
